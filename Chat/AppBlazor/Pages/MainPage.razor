@@ -1,0 +1,37 @@
+﻿@page "/mainPage"
+@using AppBlazor.Services
+@inject NavigationManager _navigationManager
+@inject IConnectivity _connectivity
+@inject IUserService _hubService
+<h3>MainPage</h3>
+<div class="d-flex justify-content-center ">
+    <div class="d-block justify-content-center">
+        <input type="text" placeholder="Enter you username" class="form-control d-flex mx-auto" @bind="username" />
+        @if (string.IsNullOrWhiteSpace(username) && isShowError)
+        {
+            <span class="text-danger mx-auto d-flex">UserName is incorrect</span>
+        } 
+        <button class="btn btn-primary mx-auto mt-3 d-flex" @onclick="EnterToHub">Enter to hub</button>
+    </div>
+</div>
+
+
+
+@code {
+    private string username;
+    private bool isShowError = false;
+    private async Task EnterToHub()
+    {
+        isShowError = true;
+        if (!string.IsNullOrWhiteSpace(username))
+        {
+            if (_connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                App.Current.MainPage.DisplayAlert("Uh Oh!", "No Internet", "OK");
+                return;
+            }
+            _hubService.UserName = username;
+            _navigationManager.NavigateTo($"/hubPage");
+        }
+    }
+}

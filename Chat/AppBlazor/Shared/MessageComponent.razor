@@ -1,0 +1,17 @@
+﻿@using Common.Models
+
+@if (IsSender)
+{
+    <p>121241</p>
+}
+else
+{
+    <p>asdf</p>
+}
+
+@code {
+    [Parameter]
+    public MessageDto Message { get; set; }
+    [Parameter]
+    public bool IsSender { get; set; }
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App.Views.ReceiverMessageView"
+             xmlns:models="clr-namespace:Common.Models;assembly=Common"
+             x:DataType="models:MessageDto">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style x:Key="MessageContainerStyle" TargetType="Grid">
+                <Setter Property="Margin" Value="8" />
+            </Style>
+            <Style x:Key="MessageShapeStyle" TargetType="Frame">
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="Padding" Value="5" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+            </Style>
+            <Style x:Key="MessageTextStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="HorizontalOptions" Value="End" />
+                <Setter Property="Padding" Value="6" />
+            </Style>
+            <Style x:Key="TimeTextStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="10" />
+                <Setter Property="FontFamily" Value="Metropolis Regular" />
+                <Setter Property="TextColor" Value="Gray" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="Margin" Value="12, 0, 48, 0" />
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid
+            ColumnDefinitions="auto,*"
+            Style="{StaticResource MessageContainerStyle}">
+            <Grid HorizontalOptions="Start" ColumnDefinitions="*" Grid.Column="0">
+                <Frame Style="{StaticResource MessageShapeStyle}">
+                    <Label Text="{Binding MessageText}" Style="{StaticResource MessageTextStyle}"/>
+                </Frame>
+            </Grid>
+            <Grid Grid.Column="1" RowDefinitions="*,*" HorizontalOptions="Start">
+                <Label
+                    Grid.Row="0"
+                    TextColor="Green"
+                    Text="{Binding UserName}"
+                    HorizontalOptions="Center"/>
+                <Label
+                    Grid.Row="1"
+                    Text="{Binding DateTimeMessage}"
+                    Style="{StaticResource TimeTextStyle}"/>
+            </Grid>
+            
+        </Grid>
+    </ContentView.Content>
+</ContentView>

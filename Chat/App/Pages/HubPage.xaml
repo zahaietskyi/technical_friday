@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+             x:Class="App.Pages.HubPage"
+             Title="HubPage"
+             xmlns:viewmodel="clr-namespace:App.ViewModels"
+             xmlns:views="clr-namespace:App.Views"
+             x:DataType="viewmodel:HubViewModel">
+    <Shell.TitleView>
+        <StackLayout>
+            <Button Text="&lt;&lt;Back" Command="{Binding BackCommand}" HorizontalOptions="Start"></Button>
+        </StackLayout>
+    </Shell.TitleView>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="SenderMessageItemTemplate">
+                <views:SenderMessageView />
+            </DataTemplate>
+            <DataTemplate x:Key="ReceiverMessageItemTemplate">
+                <views:ReceiverMessageView />
+            </DataTemplate>
+
+            <views:MessageViewSelector 
+                x:Key="MessageDataTemplateSelector"
+                x:Name="messageDataTemplateSelector"
+                SenderMessageView="{StaticResource SenderMessageItemTemplate}"    
+                ReceiverMessageView="{StaticResource ReceiverMessageItemTemplate}"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout HorizontalOptions="Center" BackgroundColor="AntiqueWhite" Margin="2,2,2,2">
+        <ScrollView VerticalScrollBarVisibility="Always" VerticalOptions="StartAndExpand" x:Name="mainScrollView">
+            <VerticalStackLayout>
+                <CollectionView ItemsSource="{Binding ListMessages}" 
+                                ItemTemplate="{StaticResource MessageDataTemplateSelector}">
+                </CollectionView>
+        </VerticalStackLayout>
+        </ScrollView>
+        <Grid HorizontalOptions="Fill" VerticalOptions="Fill" HeightRequest="50" ColumnDefinitions="*" >
+            <Entry BackgroundColor="NavajoWhite" x:Name="inputEntry"
+                       Placeholder="Enter message" PlaceholderColor="Gray" 
+                       TextColor="Black"
+                       Text="{Binding MessageText}" android:Entry.ImeOptions="Send"
+                       ReturnCommand="{Binding SendMessageCommand}" ReturnType="Send"/>
+            <ImageButton Source="send.png" Command="{Binding SendMessageCommand}" 
+                        HorizontalOptions="End" WidthRequest="50"/>
+        </Grid>
+    </StackLayout>
+</ContentPage>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App.Pages.MainPage"
+             xmlns:viewmodel="clr-namespace:App.ViewModels"
+             x:DataType="viewmodel:MainViewModel">
+
+    <VerticalStackLayout Padding="100">
+        <VerticalStackLayout>
+            <Entry HorizontalOptions="Center" Placeholder="Enter your username" Text="{Binding UserName}" 
+                   MinimumWidthRequest="200" ReturnCommand="{Binding EnterToHubCommand}" BackgroundColor="PapayaWhip"/>
+            <Label IsVisible="{Binding IsError}" HorizontalOptions="Center" 
+                   Text="UserName is incorrect" TextColor="Red" />
+            <Button HorizontalOptions="Center" Margin="30" Text="EnterToHub" 
+                    Command="{Binding EnterToHubCommand}" MinimumWidthRequest="200"/>
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+
+</ContentPage>

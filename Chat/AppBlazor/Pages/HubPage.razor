@@ -1,0 +1,80 @@
+﻿@page "/hubPage"
+
+@using AppBlazor.Services
+@using System.Collections.ObjectModel;
+@using System.Collections.Specialized;
+@using Common.Models;
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Microsoft.Extensions.Configuration;
+
+@inject IUserService _userService
+@inject IConfiguration _configuration
+<div class="hub-header"></div>
+<div class="message-container">
+    @foreach (var message in ListMessages)
+    {
+        <MessageComponent @key="message.DateTimeMessage" Message="message" IsSender="message.UserName == _userService.UserName" />
+    }
+</div>
+
+@code { 
+    private HubConnection _hubConnection;
+    private ObservableCollection<MessageDto> ListMessages { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        ListMessages = new();
+
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl(_configuration["ServerUrl"] + _configuration["ChatHubRoute"]).Build();
+
+        _hubConnection.On<MessageDto>("Get", (message) =>
+        {
+            ListMessages.Add(message);
+        });
+        ListMessages.CollectionChanged += async (sender, e) =>
+        {
+            StateHasChanged();
+        };
+        await base.OnInitializedAsync();
+        await Connect();
+        App.Current.MainPage.DisplayAlert("Info", "Welcome to chat everybody", "OK");
+    }
+    async Task Connect()
+    {
+        try
+        {
+            if (_hubConnection.State != HubConnectionState.Connected)
+            {
+                await _hubConnection.StartAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Uh Oh!", ex.Message, "OK");
+        }
+    }
+    async Task Disconnect()
+    {
+        await _hubConnection.StopAsync();
+    }
+    async Task SendMessage(string messageText)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(messageText))
+            {
+                return;
+            }
+            await _hubConnection.InvokeAsync("Send", new MessageDto()
+                {
+                    MessageText = messageText,
+                    UserName = _userService.UserName
+                });
+            messageText = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Uh Oh!", ex.Message, "OK");
+        }
+    }
+}
