@@ -6,8 +6,8 @@
 <h3>MainPage</h3>
 <div class="d-flex justify-content-center ">
     <div class="d-block justify-content-center">
-        <input type="text" placeholder="Enter you username" class="form-control d-flex mx-auto" @bind="username" />
-        @if (string.IsNullOrWhiteSpace(username) && isShowError)
+        <input type="text" placeholder="Enter you UserName" class="form-control d-flex mx-auto" @bind="UserName" />
+        @if (string.IsNullOrWhiteSpace(UserName) && IsShowError)
         {
             <span class="text-danger mx-auto d-flex">UserName is incorrect</span>
         } 
@@ -18,19 +18,19 @@
 
 
 @code {
-    private string username;
-    private bool isShowError = false;
+    private string UserName { get; set; }
+    private bool IsShowError { get; set; } = false;
     private async Task EnterToHub()
     {
-        isShowError = true;
-        if (!string.IsNullOrWhiteSpace(username))
+        IsShowError = true;
+        if (!string.IsNullOrWhiteSpace(UserName))
         {
             if (_connectivity.NetworkAccess != NetworkAccess.Internet)
             {
                 App.Current.MainPage.DisplayAlert("Uh Oh!", "No Internet", "OK");
                 return;
             }
-            _hubService.UserName = username;
+            _hubService.UserName = UserName;
             _navigationManager.NavigateTo($"/hubPage");
         }
     }

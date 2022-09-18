@@ -1,13 +1,18 @@
 ﻿@using Common.Models
 
-@if (IsSender)
-{
-    <p>121241</p>
-}
-else
-{
-    <p>asdf</p>
-}
+<div class="container">
+    <div class="row message-container">
+        <div class="col-4">
+            <div class="col">@Message.UserName</div>
+            <div class="col">@Message.DateTimeMessage</div>
+        </div>
+        <div class="col-8 position-relative">
+            <div class="position-absolute @((IsSender ? "end-10" : "start-0"))">
+                @Message.MessageText
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     [Parameter]
@@ -15,3 +20,8 @@ else
     [Parameter]
     public bool IsSender { get; set; }
 }
+<style>
+    .message-container {
+        border: 1px solid red; 
+    }
+</style>

@@ -2,21 +2,23 @@
 
 @using AppBlazor.Services
 @using System.Collections.ObjectModel;
-@using System.Collections.Specialized;
 @using Common.Models;
 @using Microsoft.AspNetCore.SignalR.Client;
 @using Microsoft.Extensions.Configuration;
 
 @inject IUserService _userService
 @inject IConfiguration _configuration
-<div class="hub-header"></div>
-<div class="message-container">
-    @foreach (var message in ListMessages)
-    {
-        <MessageComponent @key="message.DateTimeMessage" Message="message" IsSender="message.UserName == _userService.UserName" />
-    }
+<div class ="main-message-container">
+    <div class="chat-container">
+        @foreach (var message in ListMessages)
+        {
+            <MessageComponent @key="message.DateTimeMessage" Message="message" IsSender="message.UserName == _userService.UserName" />
+        }
+    </div>
+    <div>
+        <InputComponent Send="SendMessage" />
+    </div>
 </div>
-
 @code { 
     private HubConnection _hubConnection;
     private ObservableCollection<MessageDto> ListMessages { get; set; }
@@ -70,7 +72,6 @@
                     MessageText = messageText,
                     UserName = _userService.UserName
                 });
-            messageText = string.Empty;
         }
         catch (Exception ex)
         {
@@ -78,3 +79,14 @@
         }
     }
 }
+<style>
+    .main-message-container {
+        height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .chat-container {
+        height: 90%
+    }
+</style>

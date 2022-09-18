@@ -1,0 +1,19 @@
+﻿<div class="d-flex justify-content-center">
+    <input class="form-control d-flex mx-auto" @bind="Message" placeholder="enter your message" type="text" />
+    <button @onclick="SendMessage"><img width="50px" height="50px" src="https://cdn-icons-png.flaticon.com/512/2343/2343805.png" /></button>
+</div>
+
+
+@code {
+    public string Message { get; set; }
+    [Parameter] public EventCallback<string> Send { get; set; }
+
+    void SendMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(Message))
+        {
+            Send.InvokeAsync(Message);
+            Message = "";
+        }
+    }
+}

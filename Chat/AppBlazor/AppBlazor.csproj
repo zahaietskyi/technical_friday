@@ -16,7 +16,7 @@
         <ApplicationTitle>AppBlazor</ApplicationTitle>
 
         <!-- App Identifier -->
-        <ApplicationId>com.companyname.appblazor</ApplicationId>
+        <ApplicationId>TechnicalFridayChatBlazor</ApplicationId>
         <ApplicationIdGuid>E95F3DEE-C05F-43C5-9593-4A389B2D229C</ApplicationIdGuid>
 
         <!-- Versions -->
@@ -30,6 +30,14 @@
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
     </PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">
+		<AndroidKeyStore>True</AndroidKeyStore>
+		<AndroidSigningKeyStore>myapp.keystore</AndroidSigningKeyStore>
+		<AndroidSigningKeyAlias>key</AndroidSigningKeyAlias>
+		<AndroidSigningKeyPass>potato10</AndroidSigningKeyPass>
+		<AndroidSigningStorePass>potato10</AndroidSigningStorePass>
+	</PropertyGroup>
 
     <ItemGroup>
         <!-- App Icon -->
@@ -51,18 +59,19 @@
 
     <ItemGroup>
       <Content Remove="appsettings.json" />
+      <Content Remove="wwwroot\send.png" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Pages\HubPage.razor.css" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Include="Pages\HubPage.razor.css" />
+      <None Remove="Resources\Images\send.png" />
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Include="appsettings.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiImage Include="wwwroot\send.png" />
     </ItemGroup>
 
     <ItemGroup>
